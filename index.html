@@ -25,11 +25,11 @@
           sans-serif;
         background: linear-gradient(135deg, #e0e5ec 0%, #f4f6f9 100%);
         height: 100vh;
-        height: 100dvh; /* Ajuste dinâmico para telas de celular */
+        height: 100dvh;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden; /* Impede a rolagem do fundo */
+        overflow: hidden;
       }
 
       .chat-wrapper {
@@ -172,10 +172,7 @@
         display: flex;
         gap: 8px;
         align-items: center;
-        padding-bottom: env(
-          safe-area-inset-bottom,
-          12px
-        ); /* Proteção para o iPhone */
+        padding-bottom: env(safe-area-inset-bottom, 12px);
       }
 
       input[type="text"] {
@@ -183,7 +180,7 @@
         padding: 14px 18px;
         border: 2px solid #e1e5eb;
         border-radius: 24px;
-        font-size: 16px; /* 16px OBRIGATÓRIO para o iPhone não dar zoom ao clicar */
+        font-size: 16px !important; /* Trava zoom no iOS */
         outline: none;
         transition: all 0.3s ease;
         background: var(--bg-light);
@@ -205,6 +202,10 @@
         align-items: center;
         transition: all 0.2s ease;
         flex-shrink: 0;
+        /* Evitar seleção de texto ao segurar no mobile */
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
       }
 
       .mic-btn {
@@ -317,16 +318,16 @@
         border-radius: 10px;
       }
 
-      /* 📱 MODO MOBILE NATIVO (A mágica acontece aqui) */
+      /* 📱 MODO MOBILE EXCLUSIVO NATIVO */
       @media (max-width: 600px) {
         body {
-          background: #ffffff; /* Fundo sólido para não ver sombras */
-          align-items: flex-start; /* Gruda o chat no topo */
+          background: #ffffff;
+          align-items: flex-start;
         }
         .chat-wrapper {
-          height: 100dvh; /* Usa todo o espaço visível da tela */
+          height: 100dvh;
           max-width: 100%;
-          border-radius: 0; /* Tira borda arredondada */
+          border-radius: 0;
           box-shadow: none;
         }
         .chat-header {
@@ -334,30 +335,23 @@
           font-size: 1.1rem;
         }
         .header-logo {
-          height: 40px; /* Logo um pouco menor no celular */
+          height: 40px;
         }
         .chat-body {
-          padding: 15px 12px; /* Menos margem nas laterais */
+          padding: 15px 12px;
         }
         .msg-bubble {
-          font-size: 0.95rem; /* Texto legível, sem ser gigante */
+          font-size: 0.95rem;
           padding: 10px 14px;
-          max-width: 90%; /* Usa mais do espaço da tela para a mensagem */
+          max-width: 90%;
         }
         .chat-footer {
           padding: 8px 12px;
-          padding-bottom: env(
-            safe-area-inset-bottom,
-            12px
-          ); /* Respeita a barra do iPhone */
+          padding-bottom: env(safe-area-inset-bottom, 12px);
         }
         .action-btn {
-          width: 42px; /* Botões um pouco mais compactos */
+          width: 42px;
           height: 42px;
-        }
-        input[type="text"] {
-          padding: 12px 14px;
-          font-size: 16px; /* Obrigatoriamente 16px para não dar zoom no iOS */
         }
       }
     </style>
@@ -408,11 +402,11 @@
       </div>
 
       <div class="chat-footer">
+        <!-- Botão atualizado com a lógica de segurar (eventos no JS) e o SVG recolocado -->
         <button
           class="action-btn mic-btn"
           id="mic-btn"
-          onclick="toggleRecording()"
-          title="Gravar Áudio"
+          title="Segure para Gravar Áudio"
         >
           <svg viewBox="0 0 24 24">
             <path
@@ -568,16 +562,15 @@
         }
       }
 
-      // --- NOVA LÓGICA DE ÁUDIO UNIVERSAL ---
-      async function toggleRecording() {
-        const micButton = document.getElementById("mic-btn");
+      // --- ÁUDIO: SEGURAR PARA FALAR (Estilo WhatsApp) ---
+      const micBtn = document.getElementById("mic-btn");
 
-        if (isRecording) {
-          mediaRecorder.stop();
-          isRecording = false;
-          micButton.classList.remove("pulsing");
-          return;
-        }
+      // Previne menu de contexto ao segurar no celular
+      micBtn.addEventListener("contextmenu", (e) => e.preventDefault());
+
+      async function startRecording(e) {
+        if (e) e.preventDefault();
+        if (isRecording) return;
 
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
@@ -591,17 +584,14 @@
           };
 
           mediaRecorder.onstop = () => {
-            // Removi a trava do "audio/webm" para respeitar o formato do celular do cliente
             const audioBlob = new Blob(audioChunks);
             const reader = new FileReader();
 
             reader.readAsDataURL(audioBlob);
             reader.onloadend = () => {
               const base64Audio = reader.result;
-              if (!base64Audio) {
-                console.error("Erro ao converter áudio para Base64");
-                return;
-              }
+              if (!base64Audio) return;
+
               appendMessage("🎙️ Áudio enviado...", "user");
               enviarAudioParaServidor(base64Audio);
             };
@@ -609,14 +599,37 @@
 
           mediaRecorder.start();
           isRecording = true;
-          micButton.classList.add("pulsing");
+          micBtn.classList.add("pulsing");
         } catch (err) {
           alert(
-            "Para enviar áudio, você precisa permitir o acesso ao microfone! 🎤\nLembre-se: O microfone só funciona em sites com HTTPS.",
+            "Para enviar áudio, você precisa permitir o acesso ao microfone! 🎤",
           );
           console.error("Erro ao acessar microfone:", err);
         }
       }
+
+      function stopRecording(e) {
+        if (e) e.preventDefault();
+        if (
+          isRecording &&
+          mediaRecorder &&
+          mediaRecorder.state === "recording"
+        ) {
+          mediaRecorder.stop();
+          isRecording = false;
+          micBtn.classList.remove("pulsing");
+        }
+      }
+
+      // Celular (Touch)
+      micBtn.addEventListener("touchstart", startRecording, { passive: false });
+      micBtn.addEventListener("touchend", stopRecording);
+      micBtn.addEventListener("touchcancel", stopRecording);
+
+      // PC (Mouse)
+      micBtn.addEventListener("mousedown", startRecording);
+      micBtn.addEventListener("mouseup", stopRecording);
+      micBtn.addEventListener("mouseleave", stopRecording);
 
       async function enviarAudioParaServidor(base64Audio) {
         typingWrapper.style.display = "flex";
