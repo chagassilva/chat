@@ -2,7 +2,10 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Baratão das Gôndolas - Atendimento</title>
     <style>
       :root {
@@ -14,6 +17,7 @@
 
       body {
         margin: 0;
+        padding: 0;
         font-family:
           "Segoe UI",
           system-ui,
@@ -21,16 +25,18 @@
           sans-serif;
         background: linear-gradient(135deg, #e0e5ec 0%, #f4f6f9 100%);
         height: 100vh;
+        height: 100dvh; /* Ajuste dinâmico para telas de celular */
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden; /* Impede a rolagem do fundo */
       }
 
       .chat-wrapper {
         width: 100%;
         max-width: 480px;
         height: 92vh;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(16px);
         border-radius: 24px;
         box-shadow:
@@ -39,6 +45,7 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        transition: all 0.3s ease;
       }
 
       .chat-header {
@@ -58,7 +65,7 @@
       }
 
       .header-logo {
-        height: 50px;
+        height: 45px;
         object-fit: contain;
       }
 
@@ -100,7 +107,7 @@
         display: flex;
         gap: 10px;
         align-items: flex-end;
-        animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         opacity: 0;
         transform: translateY(20px);
       }
@@ -137,7 +144,7 @@
       }
 
       .msg-bubble {
-        max-width: 80%;
+        max-width: 85%;
         padding: 14px 18px;
         font-size: 0.95rem;
         line-height: 1.5;
@@ -159,12 +166,16 @@
       }
 
       .chat-footer {
-        padding: 16px 20px;
-        background: rgba(255, 255, 255, 0.8);
+        padding: 12px 16px;
+        background: #ffffff;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
         display: flex;
-        gap: 10px;
+        gap: 8px;
         align-items: center;
+        padding-bottom: env(
+          safe-area-inset-bottom,
+          12px
+        ); /* Proteção para o iPhone */
       }
 
       input[type="text"] {
@@ -172,7 +183,7 @@
         padding: 14px 18px;
         border: 2px solid #e1e5eb;
         border-radius: 24px;
-        font-size: 0.95rem;
+        font-size: 16px; /* 16px OBRIGATÓRIO para o iPhone não dar zoom ao clicar */
         outline: none;
         transition: all 0.3s ease;
         background: var(--bg-light);
@@ -181,31 +192,29 @@
       input[type="text"]:focus {
         border-color: var(--primary-blue);
         background: white;
-        box-shadow: 0 0 0 4px rgba(36, 58, 109, 0.08);
       }
 
       .action-btn {
         border: none;
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
         border-radius: 50%;
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: all 0.2s ease;
+        flex-shrink: 0;
       }
 
       .mic-btn {
         background: transparent;
         color: var(--primary-blue);
         border: 2px solid #e1e5eb;
-        transition: all 0.3s ease;
       }
 
-      .mic-btn:hover {
-        background: #e1e5eb;
-        transform: translateY(-2px);
+      .mic-btn:active {
+        transform: scale(0.95);
       }
 
       @keyframes pulse {
@@ -230,12 +239,11 @@
       .send-btn {
         background: var(--accent-yellow);
         color: var(--primary-blue);
-        box-shadow: 0 6px 20px rgba(250, 212, 7, 0.3);
+        box-shadow: 0 4px 15px rgba(250, 212, 7, 0.3);
       }
 
-      .send-btn:hover {
-        transform: scale(1.05) translateY(-2px);
-        box-shadow: 0 8px 25px rgba(250, 212, 7, 0.5);
+      .send-btn:active {
+        transform: scale(0.95);
       }
 
       .action-btn svg {
@@ -257,7 +265,7 @@
 
       .typing-indicator {
         background: white;
-        padding: 16px 20px;
+        padding: 14px 20px;
         border-radius: 20px 20px 20px 4px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
         border-left: 4px solid var(--primary-blue);
@@ -269,7 +277,7 @@
         height: 6px;
         background: #a0a5ab;
         border-radius: 50%;
-        margin: 0 3px;
+        margin: 0 2px;
         animation: bounce 1.4s infinite ease-in-out both;
       }
 
@@ -299,7 +307,7 @@
       }
 
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 5px;
       }
       ::-webkit-scrollbar-track {
         background: transparent;
@@ -307,6 +315,26 @@
       ::-webkit-scrollbar-thumb {
         background: #cbd0d6;
         border-radius: 10px;
+      }
+
+      /* 📱 MODO MOBILE NATIVO (A mágica acontece aqui) */
+      @media (max-width: 600px) {
+        body {
+          background: #ffffff; /* Fundo sólido para evitar recortes */
+        }
+        .chat-wrapper {
+          height: 100dvh; /* Ocupa 100% da tela do celular sem ser cortado pela barra do Google */
+          max-width: 100%;
+          border-radius: 0; /* Tira as bordas arredondadas (estilo App) */
+          box-shadow: none;
+        }
+        .msg-bubble {
+          font-size: 1rem;
+          padding: 12px 16px;
+        }
+        .chat-header {
+          padding: 10px 15px;
+        }
       }
     </style>
   </head>
@@ -394,14 +422,13 @@
       const userInput = document.getElementById("user-input");
       const typingWrapper = document.getElementById("typing-wrapper");
 
-      // URL DIRETA DO SEU N8N
       const WEBHOOK_URL = "https://n8n.chagassilva.com/webhook/chat-tld";
 
       const botSvg = `<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a3 3 0 0 1 3 3v1h1a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v1a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-1H5a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h1V10a3 3 0 0 1 3-3h1V5.73A2 2 0 1 1 12 2zm-1 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>`;
       const userSvg = `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
 
       const mensagemResgate =
-        "Ops! Tive um pequeno soluço na minha conexão agora. 😅<br><br>Nossa equipe de vendas está pronta para continuar seu atendimento agora mesmo:<br><br><a href='[https://wa.me/5584999908555?text=Olá,%20estava%20falando%20com%20a%20Fernanda%20no%20site,%20mas%20o%20sistema%20caiu.%20Podem%20me%20ajudar](https://wa.me/5584999908555?text=Olá,%20estava%20falando%20com%20a%20Fernanda%20no%20site,%20mas%20o%20sistema%20caiu.%20Podem%20me%20ajudar)?' target='_blank' style='color: var(--primary-blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 1px;'>📲 Falar com Atendente no WhatsApp</a>";
+        "Ops! Tive um pequeno soluço na minha conexão agora. 😅<br><br>Nossa equipe de vendas está pronta para continuar seu atendimento agora mesmo:<br><br><a href='https://wa.me/5584999908555?text=Olá,%20estava%20falando%20com%20a%20Fernanda%20no%20site,%20mas%20o%20sistema%20caiu.%20Podem%20me%20ajudar?' target='_blank' style='color: var(--primary-blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 1px;'>📲 Falar com Atendente no WhatsApp</a>";
 
       let mediaRecorder;
       let audioChunks = [];
@@ -433,13 +460,11 @@
       }
 
       function formatText(text) {
+        if (!text) return "";
         let formatted = text;
-
-        // O TRUQUE PARA O VSCODE: Usei `{3}` em vez de digitar as crases de fato
         formatted = formatted
           .replace(/`{3}[a-z]*\n?/gi, "")
           .replace(/`{3}/g, "");
-
         formatted = formatted.replace(
           /!\[([^\]]*)\]\s*\(\s*(.*?)\s*\)/g,
           function (m, alt, url) {
@@ -480,7 +505,6 @@
         if (e.key === "Enter") sendMessage();
       }
 
-      // --- NOVA FUNÇÃO DE ENVIO DIRETO PRO N8N ---
       async function sendMessage() {
         const text = userInput.value.trim();
         if (!text) return;
@@ -520,7 +544,7 @@
         }
       }
 
-      // --- GRAVAÇÃO E ENVIO DE ÁUDIO DIRETO PRO N8N ---
+      // --- NOVA LÓGICA DE ÁUDIO UNIVERSAL ---
       async function toggleRecording() {
         const micButton = document.getElementById("mic-btn");
 
@@ -539,16 +563,21 @@
           audioChunks = [];
 
           mediaRecorder.ondataavailable = (event) => {
-            audioChunks.push(event.data);
+            if (event.data.size > 0) audioChunks.push(event.data);
           };
 
           mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+            // Removi a trava do "audio/webm" para respeitar o formato do celular do cliente
+            const audioBlob = new Blob(audioChunks);
             const reader = new FileReader();
 
             reader.readAsDataURL(audioBlob);
             reader.onloadend = () => {
               const base64Audio = reader.result;
+              if (!base64Audio) {
+                console.error("Erro ao converter áudio para Base64");
+                return;
+              }
               appendMessage("🎙️ Áudio enviado...", "user");
               enviarAudioParaServidor(base64Audio);
             };
