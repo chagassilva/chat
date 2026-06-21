@@ -320,20 +320,44 @@
       /* 📱 MODO MOBILE NATIVO (A mágica acontece aqui) */
       @media (max-width: 600px) {
         body {
-          background: #ffffff; /* Fundo sólido para evitar recortes */
+          background: #ffffff; /* Fundo sólido para não ver sombras */
+          align-items: flex-start; /* Gruda o chat no topo */
         }
         .chat-wrapper {
-          height: 100dvh; /* Ocupa 100% da tela do celular sem ser cortado pela barra do Google */
+          height: 100dvh; /* Usa todo o espaço visível da tela */
           max-width: 100%;
-          border-radius: 0; /* Tira as bordas arredondadas (estilo App) */
+          border-radius: 0; /* Tira borda arredondada */
           box-shadow: none;
-        }
-        .msg-bubble {
-          font-size: 1rem;
-          padding: 12px 16px;
         }
         .chat-header {
           padding: 10px 15px;
+          font-size: 1.1rem;
+        }
+        .header-logo {
+          height: 40px; /* Logo um pouco menor no celular */
+        }
+        .chat-body {
+          padding: 15px 12px; /* Menos margem nas laterais */
+        }
+        .msg-bubble {
+          font-size: 0.95rem; /* Texto legível, sem ser gigante */
+          padding: 10px 14px;
+          max-width: 90%; /* Usa mais do espaço da tela para a mensagem */
+        }
+        .chat-footer {
+          padding: 8px 12px;
+          padding-bottom: env(
+            safe-area-inset-bottom,
+            12px
+          ); /* Respeita a barra do iPhone */
+        }
+        .action-btn {
+          width: 42px; /* Botões um pouco mais compactos */
+          height: 42px;
+        }
+        input[type="text"] {
+          padding: 12px 14px;
+          font-size: 16px; /* Obrigatoriamente 16px para não dar zoom no iOS */
         }
       }
     </style>
