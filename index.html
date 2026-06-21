@@ -42,7 +42,7 @@
       }
 
       .chat-header {
-        background: #ffffff; /* Fundo branco para destacar a logo */
+        background: #ffffff;
         color: var(--primary-blue);
         padding: 12px 20px;
         display: flex;
@@ -314,7 +314,7 @@
     <div class="chat-wrapper">
       <div class="chat-header">
         <img
-          src="https://portfolio.chagassilva.com/wp-content/uploads/2026/02/logo_baratao_natal_3d_transparente.png"
+          src="[https://portfolio.chagassilva.com/wp-content/uploads/2026/02/logo_baratao_natal_3d_transparente.png](https://portfolio.chagassilva.com/wp-content/uploads/2026/02/logo_baratao_natal_3d_transparente.png)"
           alt="Baratão Logo"
           class="header-logo"
         />
@@ -390,179 +390,208 @@
     </div>
 
     <script>
-          const chatBody = document.getElementById('chat-body');
-          const userInput = document.getElementById('user-input');
-          const typingWrapper = document.getElementById('typing-wrapper');
+      const chatBody = document.getElementById("chat-body");
+      const userInput = document.getElementById("user-input");
+      const typingWrapper = document.getElementById("typing-wrapper");
 
-          // URL DIRETA DO SEU N8N
-          const WEBHOOK_URL = "https://n8n.chagassilva.com/webhook/chat-tld";
+      // URL DIRETA DO SEU N8N
+      const WEBHOOK_URL =
+        "[https://n8n.chagassilva.com/webhook/chat-tld](https://n8n.chagassilva.com/webhook/chat-tld)";
 
-          const botSvg = `<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a3 3 0 0 1 3 3v1h1a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v1a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-1H5a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h1V10a3 3 0 0 1 3-3h1V5.73A2 2 0 1 1 12 2zm-1 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>`;
-          const userSvg = `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+      const botSvg = `<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a3 3 0 0 1 3 3v1h1a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v1a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-1H5a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h1V10a3 3 0 0 1 3-3h1V5.73A2 2 0 1 1 12 2zm-1 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-1-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>`;
+      const userSvg = `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
 
-          const mensagemResgate = "Ops! Tive um pequeno soluço na minha conexão agora. 😅<br><br>Nossa equipe de vendas está pronta para continuar seu atendimento agora mesmo:<br><br><a href='https://wa.me/5584999908555?text=Olá,%20estava%20falando%20com%20a%20Fernanda%20no%20site,%20mas%20o%20sistema%20caiu.%20Podem%20me%20ajudar?' target='_blank' style='color: var(--primary-blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 1px;'>📲 Falar com Atendente no WhatsApp</a>";
+      const mensagemResgate =
+        "Ops! Tive um pequeno soluço na minha conexão agora. 😅<br><br>Nossa equipe de vendas está pronta para continuar seu atendimento agora mesmo:<br><br><a href='[https://wa.me/5584999908555?text=Olá,%20estava%20falando%20com%20a%20Fernanda%20no%20site,%20mas%20o%20sistema%20caiu.%20Podem%20me%20ajudar](https://wa.me/5584999908555?text=Olá,%20estava%20falando%20com%20a%20Fernanda%20no%20site,%20mas%20o%20sistema%20caiu.%20Podem%20me%20ajudar)?' target='_blank' style='color: var(--primary-blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 1px;'>📲 Falar com Atendente no WhatsApp</a>";
 
-          let mediaRecorder;
-          let audioChunks = [];
-          let isRecording = false;
+      let mediaRecorder;
+      let audioChunks = [];
+      let isRecording = false;
 
-          function playBeepSound() {
-            try {
-              const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-              const oscillator = audioCtx.createOscillator();
-              const gainNode = audioCtx.createGain();
-              oscillator.connect(gainNode);
-              gainNode.connect(audioCtx.destination);
-              oscillator.type = 'sine';
-              oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
-              oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
-              gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-              gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-              oscillator.start();
-              oscillator.stop(audioCtx.currentTime + 0.1);
-            } catch(e) {}
+      function playBeepSound() {
+        try {
+          const audioCtx = new (
+            window.AudioContext || window.webkitAudioContext
+          )();
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          oscillator.type = "sine";
+          oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(
+            300,
+            audioCtx.currentTime + 0.1,
+          );
+          gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioCtx.currentTime + 0.1,
+          );
+          oscillator.start();
+          oscillator.stop(audioCtx.currentTime + 0.1);
+        } catch (e) {}
+      }
+
+      function formatText(text) {
+        let formatted = text;
+
+        // O TRUQUE PARA O VSCODE: Usei `{3}` em vez de digitar as crases de fato
+        formatted = formatted
+          .replace(/`{3}[a-z]*\n?/gi, "")
+          .replace(/`{3}/g, "");
+
+        formatted = formatted.replace(
+          /!\[([^\]]*)\]\s*\(\s*(.*?)\s*\)/g,
+          function (m, alt, url) {
+            return `<img src="${url.trim()}" alt="${alt}" style="max-width: 100%; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 12px rgba(36, 58, 109, 0.15); display: block;">`;
+          },
+        );
+        formatted = formatted.replace(
+          /\[([^\]]+)\]\s*\(\s*(.*?)\s*\)/g,
+          function (m, texto, url) {
+            return `<a href="${url.trim()}" target="_blank" style="color: var(--primary-blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 1px;">${texto}</a>`;
+          },
+        );
+        formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        formatted = formatted.replace(/\n/g, "<br>");
+        return formatted;
+      }
+
+      function appendMessage(text, sender) {
+        const wrapper = document.createElement("div");
+        wrapper.className = `msg-wrapper ${sender}`;
+
+        const avatar = document.createElement("div");
+        avatar.className = `avatar ${sender}`;
+        avatar.innerHTML = sender === "bot" ? botSvg : userSvg;
+
+        const bubble = document.createElement("div");
+        bubble.className = "msg-bubble";
+        bubble.innerHTML = formatText(text);
+
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubble);
+
+        chatBody.appendChild(wrapper);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      function handleEnter(e) {
+        if (e.key === "Enter") sendMessage();
+      }
+
+      // --- NOVA FUNÇÃO DE ENVIO DIRETO PRO N8N ---
+      async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        playBeepSound();
+        appendMessage(text, "user");
+        userInput.value = "";
+
+        typingWrapper.style.display = "flex";
+        chatBody.appendChild(typingWrapper);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        try {
+          const response = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mensagem: text }),
+          });
+
+          const data = await response.json();
+          typingWrapper.style.display = "none";
+
+          if (
+            !data ||
+            !data.resposta ||
+            data.resposta.includes("Erro") ||
+            data.resposta.includes("Error")
+          ) {
+            appendMessage(mensagemResgate, "bot");
+          } else {
+            appendMessage(data.resposta, "bot");
           }
+        } catch (error) {
+          console.error("Erro na requisição:", error);
+          typingWrapper.style.display = "none";
+          appendMessage(mensagemResgate, "bot");
+        }
+      }
 
-          function formatText(text) {
-            let formatted = text.replace(/```[a-z]*\n?/gi, '').replace(/
-      ```/g, '');
-            formatted = formatted.replace(/!\[([^\]]*)\]\s*\(\s*(.*?)\s*\)/g, function(m, alt, url) {
-              return `<img src="${url.trim()}" alt="${alt}" style="max-width: 100%; border-radius: 8px; margin-top: 10px; box-shadow: 0 4px 12px rgba(36, 58, 109, 0.15); display: block;">`;
-            });
-            formatted = formatted.replace(/\[([^\]]+)\]\s*\(\s*(.*?)\s*\)/g, function(m, texto, url) {
-              return `<a href="${url.trim()}" target="_blank" style="color: var(--primary-blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--accent-yellow); padding-bottom: 1px;">${texto}</a>`;
-            });
-            formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            formatted = formatted.replace(/\n/g, '<br>');
-            return formatted;
+      // --- GRAVAÇÃO E ENVIO DE ÁUDIO DIRETO PRO N8N ---
+      async function toggleRecording() {
+        const micButton = document.getElementById("mic-btn");
+
+        if (isRecording) {
+          mediaRecorder.stop();
+          isRecording = false;
+          micButton.classList.remove("pulsing");
+          return;
+        }
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+            const reader = new FileReader();
+
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = () => {
+              const base64Audio = reader.result;
+              appendMessage("🎙️ Áudio enviado...", "user");
+              enviarAudioParaServidor(base64Audio);
+            };
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          micButton.classList.add("pulsing");
+        } catch (err) {
+          alert(
+            "Para enviar áudio, você precisa permitir o acesso ao microfone! 🎤\nLembre-se: O microfone só funciona em sites com HTTPS.",
+          );
+          console.error("Erro ao acessar microfone:", err);
+        }
+      }
+
+      async function enviarAudioParaServidor(base64Audio) {
+        typingWrapper.style.display = "flex";
+        chatBody.appendChild(typingWrapper);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        try {
+          const response = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mensagem: "", audioBase64: base64Audio }),
+          });
+
+          const data = await response.json();
+          typingWrapper.style.display = "none";
+
+          if (!data || !data.resposta || data.resposta.includes("Erro")) {
+            appendMessage(mensagemResgate, "bot");
+          } else {
+            appendMessage(data.resposta, "bot");
           }
-
-          function appendMessage(text, sender) {
-            const wrapper = document.createElement('div');
-            wrapper.className = `msg-wrapper ${sender}`;
-
-            const avatar = document.createElement('div');
-            avatar.className = `avatar ${sender}`;
-            avatar.innerHTML = sender === 'bot' ? botSvg : userSvg;
-
-            const bubble = document.createElement('div');
-            bubble.className = 'msg-bubble';
-            bubble.innerHTML = formatText(text);
-
-            wrapper.appendChild(avatar);
-            wrapper.appendChild(bubble);
-
-            chatBody.appendChild(wrapper);
-            chatBody.scrollTop = chatBody.scrollHeight;
-          }
-
-          function handleEnter(e) {
-            if (e.key === 'Enter') sendMessage();
-          }
-
-          // --- NOVA FUNÇÃO DE ENVIO DIRETO PRO N8N ---
-          async function sendMessage() {
-            const text = userInput.value.trim();
-            if (!text) return;
-
-            playBeepSound();
-            appendMessage(text, 'user');
-            userInput.value = '';
-
-            typingWrapper.style.display = 'flex';
-            chatBody.appendChild(typingWrapper);
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            try {
-              const response = await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mensagem: text })
-              });
-
-              const data = await response.json();
-              typingWrapper.style.display = 'none';
-
-              if (!data || !data.resposta || data.resposta.includes('Erro') || data.resposta.includes('Error')) {
-                 appendMessage(mensagemResgate, 'bot');
-              } else {
-                 appendMessage(data.resposta, 'bot');
-              }
-            } catch (error) {
-              console.error("Erro na requisição:", error);
-              typingWrapper.style.display = 'none';
-              appendMessage(mensagemResgate, 'bot');
-            }
-          }
-
-          // --- GRAVAÇÃO E ENVIO DE ÁUDIO DIRETO PRO N8N ---
-          async function toggleRecording() {
-            const micButton = document.getElementById('mic-btn');
-
-            if (isRecording) {
-              mediaRecorder.stop();
-              isRecording = false;
-              micButton.classList.remove('pulsing');
-              return;
-            }
-
-            try {
-              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-              mediaRecorder = new MediaRecorder(stream);
-              audioChunks = [];
-
-              mediaRecorder.ondataavailable = event => {
-                audioChunks.push(event.data);
-              };
-
-              mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                const reader = new FileReader();
-
-                reader.readAsDataURL(audioBlob);
-                reader.onloadend = () => {
-                  const base64Audio = reader.result;
-                  appendMessage("🎙️ Áudio enviado...", 'user');
-                  enviarAudioParaServidor(base64Audio);
-                };
-              };
-
-              mediaRecorder.start();
-              isRecording = true;
-              micButton.classList.add('pulsing');
-
-            } catch (err) {
-              alert("Para enviar áudio, você precisa permitir o acesso ao microfone! 🎤\nLembre-se: O microfone só funciona em sites com HTTPS.");
-              console.error("Erro ao acessar microfone:", err);
-            }
-          }
-
-          async function enviarAudioParaServidor(base64Audio) {
-            typingWrapper.style.display = 'flex';
-            chatBody.appendChild(typingWrapper);
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            try {
-              const response = await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mensagem: "", audioBase64: base64Audio })
-              });
-
-              const data = await response.json();
-              typingWrapper.style.display = 'none';
-
-              if (!data || !data.resposta || data.resposta.includes('Erro')) {
-                 appendMessage(mensagemResgate, 'bot');
-              } else {
-                 appendMessage(data.resposta, 'bot');
-              }
-            } catch (error) {
-              console.error("Erro na requisição de áudio:", error);
-              typingWrapper.style.display = 'none';
-              appendMessage(mensagemResgate, 'bot');
-            }
-          }
+        } catch (error) {
+          console.error("Erro na requisição de áudio:", error);
+          typingWrapper.style.display = "none";
+          appendMessage(mensagemResgate, "bot");
+        }
+      }
     </script>
   </body>
 </html>
