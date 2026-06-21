@@ -165,14 +165,17 @@
         border-radius: 20px 20px 4px 20px;
       }
 
+      /* AJUSTE AQUI: Mais respiro, desgrudado das laterais e do fundo */
       .chat-footer {
-        padding: 12px 16px;
+        padding: 16px 20px;
         background: #ffffff;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
         display: flex;
-        gap: 8px;
+        gap: 12px; /* Afasta o input dos botões */
         align-items: center;
-        padding-bottom: env(safe-area-inset-bottom, 12px);
+        padding-bottom: calc(
+          env(safe-area-inset-bottom, 16px) + 16px
+        ); /* Garante que não cole no fundo */
       }
 
       input[type="text"] {
@@ -180,7 +183,7 @@
         padding: 14px 18px;
         border: 2px solid #e1e5eb;
         border-radius: 24px;
-        font-size: 16px !important; /* Trava zoom no iOS */
+        font-size: 16px !important;
         outline: none;
         transition: all 0.3s ease;
         background: var(--bg-light);
@@ -193,8 +196,8 @@
 
       .action-btn {
         border: none;
-        width: 46px;
-        height: 46px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
         cursor: pointer;
         display: flex;
@@ -202,7 +205,6 @@
         align-items: center;
         transition: all 0.2s ease;
         flex-shrink: 0;
-        /* Evitar seleção de texto ao segurar no mobile */
         user-select: none;
         -webkit-user-select: none;
         -webkit-touch-callout: none;
@@ -345,13 +347,18 @@
           padding: 10px 14px;
           max-width: 90%;
         }
+        /* AJUSTE AQUI: Margens maiores nas laterais e muito mais desgrudado do fundo */
         .chat-footer {
-          padding: 8px 12px;
-          padding-bottom: env(safe-area-inset-bottom, 12px);
+          padding: 12px 16px;
+          padding-bottom: calc(env(safe-area-inset-bottom, 12px) + 20px);
+          gap: 10px;
         }
         .action-btn {
-          width: 42px;
-          height: 42px;
+          width: 44px;
+          height: 44px;
+        }
+        input[type="text"] {
+          padding: 12px 16px;
         }
       }
     </style>
@@ -402,7 +409,6 @@
       </div>
 
       <div class="chat-footer">
-        <!-- Botão atualizado com a lógica de segurar (eventos no JS) e o SVG recolocado -->
         <button
           class="action-btn mic-btn"
           id="mic-btn"
@@ -562,10 +568,8 @@
         }
       }
 
-      // --- ÁUDIO: SEGURAR PARA FALAR (Estilo WhatsApp) ---
       const micBtn = document.getElementById("mic-btn");
 
-      // Previne menu de contexto ao segurar no celular
       micBtn.addEventListener("contextmenu", (e) => e.preventDefault());
 
       async function startRecording(e) {
@@ -621,12 +625,10 @@
         }
       }
 
-      // Celular (Touch)
       micBtn.addEventListener("touchstart", startRecording, { passive: false });
       micBtn.addEventListener("touchend", stopRecording);
       micBtn.addEventListener("touchcancel", stopRecording);
 
-      // PC (Mouse)
       micBtn.addEventListener("mousedown", startRecording);
       micBtn.addEventListener("mouseup", stopRecording);
       micBtn.addEventListener("mouseleave", stopRecording);
